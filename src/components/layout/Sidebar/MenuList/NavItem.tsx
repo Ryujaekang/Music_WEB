@@ -8,8 +8,8 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 interface NavItemProps {
   title: string;
   url: string;
-  icon?: IconDefinition;
-  activeIcon?: IconDefinition;
+  icon: IconDefinition;
+  activeIcon: IconDefinition;
   level: number;
 }
 
@@ -27,9 +27,11 @@ function NavItem({ url, icon, title, activeIcon, level, ...others }: NavItemProp
         {...others}
       >
         <ListItemIcon>
-          {active
-            ? activeIcon && <FontAwesomeIcon icon={activeIcon} style={{ fontSize: '1.8rem' }} />
-            : icon && <FontAwesomeIcon icon={icon} style={{ fontSize: '1.8rem' }} />}
+          {active ? (
+            <FontAwesomeIcon icon={activeIcon || icon} style={{ fontSize: '1.8rem' }} />
+          ) : (
+            <FontAwesomeIcon icon={icon} style={{ fontSize: '1.8rem' }} />
+          )}
         </ListItemIcon>
         <ListItemText primary={title} />
       </ListItemButton>

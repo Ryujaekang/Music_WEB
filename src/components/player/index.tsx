@@ -58,7 +58,7 @@ const Player = (props: any) => {
 
   return (
     <ReactJkMusicPlayer
-      // audioLists={[]}
+      audioLists={[]}
       glassBg
       showMediaSession
       mode={'full'}
@@ -73,7 +73,6 @@ const Player = (props: any) => {
       showReload={true}
       restartCurrentOnPrev={true}
       defaultPosition={{ bottom: 50, right: 50 }}
-      // audioLists={options.audioLists} // 최초에 로컬스토리지에서 한번 받아오고 끝
     />
   );
 };

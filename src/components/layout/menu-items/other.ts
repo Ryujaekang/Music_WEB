@@ -2,13 +2,7 @@ import {
   faCog,
   faQuestionCircle,
   faCircleUser,
-  faCreditCardFront,
-} from '@fortawesome/free-regular-svg-icons';
-import {
-  faCog as cogSolid,
-  faQuestionCircle as questionCircleSolid,
-  faCircleUser as circleUserSolid,
-  faCreditCardFront as creditCardFrontSolid,
+  faCreditCard,
 } from '@fortawesome/free-solid-svg-icons';
 
 const other = {
@@ -20,7 +14,6 @@ const other = {
       title: '설정',
       type: 'collapse',
       icon: faCog,
-      activeIcon: cogSolid,
       children: [
         {
           id: 'account',
@@ -28,15 +21,13 @@ const other = {
           type: 'item',
           url: '/account',
           icon: faCircleUser,
-          activeIcon: circleUserSolid,
         },
         {
           id: 'payment',
           title: '결제 정보',
           type: 'item',
           url: '/payment',
-          icon: faCreditCardFront,
-          activeIcon: creditCardFrontSolid,
+          icon: faCreditCard,
         },
       ],
     },
@@ -46,7 +37,6 @@ const other = {
       type: 'item',
       url: '/service',
       icon: faQuestionCircle,
-      activeIcon: questionCircleSolid,
     },
   ],
 };
