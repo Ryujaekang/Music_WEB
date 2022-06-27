@@ -89,7 +89,7 @@ function NavCollapse({ menu, level }: NavCollapseProps) {
       >
         <ListItemIcon>
           {open ? (
-            <FontAwesomeIcon icon={menu.activeIcon} style={{ fontSize: '1.8rem' }} />
+            <FontAwesomeIcon icon={menu.activeIcon || menu.icon} style={{ fontSize: '1.8rem' }} />
           ) : (
             <FontAwesomeIcon icon={menu.icon} style={{ fontSize: '1.8rem' }} />
           )}

@@ -1,9 +1,4 @@
-import { faHeart, faHistory, faListMusic } from '@fortawesome/free-regular-svg-icons';
-import {
-  faHeart as heartSolid,
-  faHistory as historySolid,
-  faListMusic as listMusicSolid,
-} from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faHistory, faListUl } from '@fortawesome/free-solid-svg-icons';
 
 const mine = {
   id: 'mine',
@@ -16,7 +11,6 @@ const mine = {
       type: 'item',
       url: '/like',
       icon: faHeart,
-      activeIcon: heartSolid,
     },
     {
       id: 'history',
@@ -24,15 +18,13 @@ const mine = {
       type: 'item',
       url: '/history',
       icon: faHistory,
-      activeIcon: historySolid,
     },
     {
       id: 'playlist',
       title: '플레이리스트',
       type: 'item',
       url: '/playlist',
-      icon: faListMusic,
-      activeIcon: listMusicSolid,
+      icon: faListUl,
     },
   ],
 };
