@@ -145,7 +145,11 @@ function Chart({ chartData }: ChartProps) {
               }[timeType]
             }
           </Stack>
-          <PlayGroupChip />
+          <PlayGroupChip
+            rows={data.trackList}
+            selected={selected}
+            onChangeSelected={onChangeSelected}
+          />
         </Stack>
       </ContainerBox>
       <ContainerBox>
