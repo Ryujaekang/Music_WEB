@@ -5,11 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faDownload,
   faPlus,
-  faListMusic,
+  faListUl,
   faMusic,
   faCompactDisc,
-  faUserMusic,
-} from '@fortawesome/free-regular-svg-icons';
+  faUserPlus,
+} from '@fortawesome/free-solid-svg-icons';
 
 interface CustomMenuProps {
   anchorEl: null | HTMLElement;
@@ -59,7 +59,7 @@ function CustomMenu({ anchorEl, setAnchorEl, trackId, albumId, artistId }: Custo
       </MenuItem>
       <MenuItem onClick={handleClose}>
         <ListItemIcon>
-          <FontAwesomeIcon icon={faListMusic} />
+          <FontAwesomeIcon icon={faListUl} />
         </ListItemIcon>
         <ListItemText>플레이리스트에 담기</ListItemText>
       </MenuItem>
@@ -82,7 +82,7 @@ function CustomMenu({ anchorEl, setAnchorEl, trackId, albumId, artistId }: Custo
       {artistId && (
         <MenuItem onClick={() => router.push(`/artist/${artistId}`)}>
           <ListItemIcon>
-            <FontAwesomeIcon icon={faUserMusic} />
+            <FontAwesomeIcon icon={faUserPlus} />
           </ListItemIcon>
           <ListItemText>아티스트 채널</ListItemText>
         </MenuItem>

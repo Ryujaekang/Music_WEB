@@ -74,7 +74,7 @@ function Top100({ trackList }: Top100Props) {
                 name={item.name}
                 rank={item.rank}
                 wave={item.wave}
-                url={item.url}
+                musicUrl={item.musicUrl}
               />
             </SwiperSlide>
           );

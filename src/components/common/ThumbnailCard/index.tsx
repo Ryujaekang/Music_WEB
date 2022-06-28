@@ -45,7 +45,6 @@ function ThumbnailCard({
   const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  console.log('trackList,.trackList', trackList);
   const playAlbum = async (trackId: number) => {
     const state = {
       name: name,
