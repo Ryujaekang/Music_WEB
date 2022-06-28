@@ -9,6 +9,7 @@ export interface BasicTrack {
   duration: number | null; // 곡 재생 시간
   description: string | null; // 곡 설명
   adult: 0 | 1; // 성인 곡 유무
+  musicUrl: string; // 음원 재생 url
 }
 
 export interface Track extends BasicTrack {

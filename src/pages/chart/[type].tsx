@@ -26,12 +26,13 @@ interface ChartProps {
 
 function Chart({ chartData }: ChartProps) {
   const router = useRouter();
+  const { type } = router.query;
 
-  const { date, genre, layout, trackList, type } = chartData;
+  const { date, genre, layout, trackList } = chartData || {};
   const basicTimeType = tabItem.filter((item) => item.value === type);
   const [timeType, setTimeType] = useState(basicTimeType[0].value);
   const [genreType, setGenreType] = useState(genre);
-  const [dateType, setDateType] = useState(layout.dateList ? layout.dateList[0] : null);
+  const [dateType, setDateType] = useState(layout?.dateList ? layout.dateList[0] : null);
   const [selected, setSelected] = useState<string[]>([]);
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
@@ -59,22 +60,17 @@ function Chart({ chartData }: ChartProps) {
     setSelected(val);
   };
 
-  function yearAry(val: string[]) {
-    return val;
-  }
-
-  const [age, setAge] = React.useState<number | null>(null);
-
-  const handleChange = (event: any) => {
-    setAge(event.target.value as number);
-  };
+  useEffect(() => {
+    const defaultDate = data.layout.dateList;
+    defaultDate && setDateType(defaultDate[0]);
+  }, [type]);
 
   return (
     <>
       <ContainerBox sx={{ marginTop: 2 }}>
         <Stack direction="row" spacing={1} alignItems={'center'}>
           <Typography variant="h6" component="div" sx={{ marginRight: 2 }}>
-            뮤온차트
+            뮤직차트
           </Typography>
           {smDown ? (
             <CustomSelect
@@ -96,8 +92,7 @@ function Chart({ chartData }: ChartProps) {
                 now: <Typography>{moment(date).format('l hh:mm')}</Typography>,
                 day: (
                   <CustomSelect
-                    // item={layout.genreList}
-                    item={test}
+                    item={layout?.genreList}
                     typeString="genre"
                     type={genreType}
                     setType={setGenreType}
@@ -106,7 +101,7 @@ function Chart({ chartData }: ChartProps) {
                 week: (
                   <>
                     <CustomSelect
-                      item={layout.genreList}
+                      item={layout?.genreList}
                       typeString="genre"
                       type={genreType}
                       setType={setGenreType}
@@ -118,7 +113,7 @@ function Chart({ chartData }: ChartProps) {
                       setType={setYearType}
                     /> */}
                     <CustomSelect
-                      item={layout.dateList}
+                      item={layout?.dateList}
                       typeString="week"
                       type={dateType}
                       setType={setDateType}
@@ -128,7 +123,7 @@ function Chart({ chartData }: ChartProps) {
                 month: (
                   <>
                     <CustomSelect
-                      item={layout.genreList}
+                      item={layout?.genreList}
                       typeString="genre"
                       type={genreType}
                       setType={setGenreType}
@@ -140,7 +135,7 @@ function Chart({ chartData }: ChartProps) {
                       setType={setYearType}
                     /> */}
                     <CustomSelect
-                      item={layout.dateList}
+                      item={layout?.dateList}
                       typeString="month"
                       type={dateType}
                       setType={setDateType}
@@ -150,7 +145,11 @@ function Chart({ chartData }: ChartProps) {
               }[timeType]
             }
           </Stack>
-          <PlayGroupChip />
+          <PlayGroupChip
+            rows={data.trackList}
+            selected={selected}
+            onChangeSelected={onChangeSelected}
+          />
         </Stack>
       </ContainerBox>
       <ContainerBox>
@@ -262,88 +261,5 @@ const tableHead = [
     id: 'other',
     numeric: false,
     disablePadding: true,
-  },
-];
-
-const test = [
-  {
-    id: null,
-    name: 'all',
-    image: null,
-    displayName: '장르종합',
-    title: null,
-    description: null,
-    views: 0,
-    albumList: null,
-  },
-  {
-    id: 1,
-    name: 'animation',
-    image: null,
-    displayName: '애니메이션',
-    title: null,
-    description: null,
-    views: 0,
-    albumList: null,
-  },
-  {
-    id: 2,
-    name: 'game',
-    image: null,
-    displayName: '게임',
-    title: null,
-    description: null,
-    views: 0,
-    albumList: null,
-  },
-  {
-    id: 3,
-    name: 'streamer',
-    image: null,
-    displayName: '스트리머',
-    title: null,
-    description: null,
-    views: 0,
-    albumList: null,
-  },
-  {
-    id: 4,
-    name: 'utaite',
-    image: null,
-    displayName: '우타이테',
-    title: null,
-    description: null,
-    views: 0,
-    albumList: null,
-  },
-  {
-    id: 5,
-    name: 'vocaloid',
-    image: null,
-    displayName: '보컬로이드',
-    title: null,
-    description: null,
-    views: 0,
-    albumList: null,
-  },
-  {
-    id: 6,
-    name: 'jpop',
-    image: null,
-    displayName: 'J-POP',
-    title: null,
-    description: null,
-    views: 0,
-    albumList: null,
-  },
-  {
-    id: 7,
-    name: 'other',
-    image: null,
-    displayName: '기타',
-    title: null,
-    description: null,
-    views: 0,
-    albumList: null,
   },
 ];

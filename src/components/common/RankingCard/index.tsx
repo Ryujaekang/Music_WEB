@@ -19,7 +19,6 @@ import {
   faCaretDown,
   faHeart,
   faEllipsisV,
-  faHorizontalRule,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRE } from '@fortawesome/free-regular-svg-icons';
 import { CustomMenu } from '..';
@@ -29,7 +28,7 @@ import getMusicLink from '@lib/getMusicSrc';
 
 // redux-toolkit
 import { useAppSelector, useAppDispatch } from '@app/hooks';
-import { setOptions } from '@components/player/playerSlice';
+import { setPlaylist } from '@components/player/playerSlice';
 import CustomAxios from '@lib/customAxios';
 
 export interface RankingCardProps {
@@ -42,7 +41,7 @@ export interface RankingCardProps {
   artistId: number;
   artistName: string;
   albumId: number;
-  url: string;
+  musicUrl: string;
 }
 
 function RankingCard({
@@ -55,13 +54,13 @@ function RankingCard({
   albumImage,
   artistId,
   artistName,
-  url,
+  musicUrl,
 }: RankingCardProps) {
   const theme = useTheme();
   const [hover, setHover] = useState(false);
   const [checked, setChecked] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { options } = useAppSelector((state) => state.player);
+  const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
 
   const handleChange = (event) => {
@@ -72,25 +71,18 @@ function RankingCard({
     setAnchorEl(event.currentTarget);
   };
 
-  const playMusic = async (trackId: number) => {
+  const playMusic = () => {
     const state = {
+      trackId: id,
       name: name,
-      musicSrc: await getMusicLink(trackId),
+      musicSrc: musicUrl,
       cover: albumImage,
       singer: artistName,
     };
 
-    dispatch(
-      setOptions({
-        clearPriorAudioLists: true,
-        // quietUpdate: false,
-        // loadAudioErrorPlayNext: false,
-        audioLists: [state, ...options.audioLists],
-        // preload: true,
-        // once: true,
-        // quietUpdate: false,
-      })
-    );
+    console.log('state', state);
+
+    dispatch(setPlaylist(state));
   };
 
   return (
@@ -123,7 +115,7 @@ function RankingCard({
               justifyContent: 'center',
             }}
           >
-            <IconButton title="재생" onClick={() => playMusic(id)}>
+            <IconButton title="재생" onClick={() => playMusic()}>
               <FontAwesomeIcon icon={faPlay} style={{ color: '#fff', fontSize: '1.8rem' }} />
             </IconButton>
           </Box>

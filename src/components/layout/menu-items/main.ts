@@ -7,14 +7,14 @@ const main = {
   children: [
     {
       id: 'home',
-      title: '뮤온홈',
+      title: '홈',
       type: 'item',
       url: '/',
       icon: faHome,
     },
     {
       id: 'chart',
-      title: '뮤온차트',
+      title: '뮤직차트',
       type: 'item',
       url: '/chart/now',
       icon: faChartLine,

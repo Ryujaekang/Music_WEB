@@ -22,17 +22,17 @@ function Home({ top100, newAlbumList, channel }: HomeProps) {
   const { trackList: top100TrackList } = top100 || {};
 
   // const channelIdAry = channel.list.map((item) => item.id).toString();
-  // const newAlbumIdAry = newAlbumList.map((item) => item.id).toString();
+  const newAlbumIdAry = newAlbumList.map((item) => item.id).toString();
 
   // const { data: channelLikes } = useRequest({
   //   url: `/api/like`,
   //   params: { type: 'album', ids: channelIdAry },
   // });
 
-  // const { data: newAlbumLikes } = useRequest({
-  //   url: `/api/like`,
-  //   params: { type: 'album', ids: newAlbumIdAry },
-  // });
+  const { data: newAlbumLikes } = useRequest({
+    url: `/api/like`,
+    params: { type: 'album', ids: newAlbumIdAry },
+  });
 
   return (
     <>
@@ -45,17 +45,17 @@ function Home({ top100, newAlbumList, channel }: HomeProps) {
         </Typography>
         <Top100 trackList={top100TrackList || []} />
       </ContainerBox>
-      <ContainerBox>
+      {/* <ContainerBox>
         <Typography variant="h6" component="div">
-          {/* {`${channel.channelInfo.displayName}`} */}
+          {`${channel.channelInfo.displayName}`}
         </Typography>
-        {/* <SwiperCard items={channel.list} likeInfoList={channelLikes?.likeInfoList} /> */}
-      </ContainerBox>
+        <SwiperCard items={channel.list} likeInfoList={channelLikes?.likeInfoList} />
+      </ContainerBox> */}
       <ContainerBox>
         <Typography variant="h6" component="div">
           <NextLink href={'/new/track'}>최신음악</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
-        {/* <SwiperCard items={newAlbumList} likeInfoList={newAlbumLikes?.likeInfoList} /> */}
+        <SwiperCard items={newAlbumList} likeInfoList={newAlbumLikes?.likeInfoList} />
       </ContainerBox>
     </>
   );
@@ -65,23 +65,23 @@ Home.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-// export async function getStaticProps() {
-//   const { data: Top100 } = await axios.get('/track/rank/now', {
-//     params: { size: 20 },
-//   });
-//   const { data: newAlbum } = await axios.get('/album/new', {
-//     params: { size: 8 },
-//   });
-//   const { data: channel } = await axios.get('/channel');
+export async function getStaticProps() {
+  const { data: Top100 } = await axios.get('/track/rank/now', {
+    params: { size: 20 },
+  });
+  const { data: newAlbum } = await axios.get('/album/new', {
+    params: { size: 8 },
+  });
+  // const { data: channel } = await axios.get('/channel');
 
-//   return {
-//     props: {
-//       top100: Top100.data,
-//       newAlbumList: newAlbum.data.list,
-//       channel: channel.data,
-//     }, // will be passed to the page component as props
-//     revalidate: 3600, // In seconds
-//   };
-// }
+  return {
+    props: {
+      top100: Top100.data,
+      newAlbumList: newAlbum.data.list,
+      // channel: channel.data,
+    }, // will be passed to the page component as props
+    revalidate: 3600, // In seconds
+  };
+}
 
 export default Home;

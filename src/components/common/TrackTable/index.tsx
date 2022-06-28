@@ -27,7 +27,7 @@ import getMusicLink from '@lib/getMusicSrc';
 
 // redux-toolkit
 import { useAppSelector, useAppDispatch } from '@app/hooks';
-import { setOptions } from '@components/player/playerSlice';
+import { setPlaylist } from '@components/player/playerSlice';
 
 function EnhancedTableHead(props) {
   const { headCells, onSelectAllClick, numSelected, rowCount } = props;
@@ -86,7 +86,7 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
   const [hoveredRow, setHoveredRow] = useState(-1);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { options } = useAppSelector((state) => state.player);
+  const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
 
   const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -95,19 +95,19 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.id);
+      const newSelecteds = rows.map((n) => n);
       onChangeSelected(newSelecteds);
       return;
     }
     onChangeSelected([]);
   };
 
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
+  const handleClick = (event, row) => {
+    const selectedIndex = selected.indexOf(row);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, row);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -122,7 +122,7 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
     onChangeSelected(newSelected);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (row) => selected.indexOf(row) !== -1;
 
   const showCartHandler = (i) => {
     setHoveredRow(i);
@@ -132,27 +132,18 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
     setHoveredRow(-1);
   };
 
-  const playMusic = async (
-    name: string,
-    trackId: number,
-    albumImage: string,
-    artistName: string
-  ) => {
+  const playMusic = async ({ name, trackId, musicUrl, albumImage, artistName }) => {
     const state = {
       name: name,
-      musicSrc: await getMusicLink(trackId),
+      trackId: trackId,
+      musicSrc: musicUrl,
       cover: albumImage,
       singer: artistName,
     };
-    console.log('state', state);
-    dispatch(
-      setOptions({
-        clearPriorAudioLists: true,
-        audioLists: [state, ...options.audioLists],
-      })
-    );
+    dispatch(setPlaylist(state));
   };
 
+  console.log('selected', selected);
   return (
     <>
       <TableContainer>
@@ -167,13 +158,13 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
             {rows.map((row, index) => {
               const isLike = likeInfo && Boolean(likeInfo[index].isLike);
 
-              const isItemSelected = isSelected(row.id);
+              const isItemSelected = isSelected(row);
               const labelId = `enhanced-table-checkbox-${index}`;
 
               return (
                 <TableRow
                   hover
-                  onClick={(event) => handleClick(event, row.id)}
+                  onClick={(event) => handleClick(event, row)}
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
@@ -214,7 +205,13 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
                         <IconButton
                           title="재생"
                           onClick={() =>
-                            playMusic(row.name, row.id, row.albumImage, row.artistName)
+                            playMusic({
+                              name: row.name,
+                              trackId: row.id,
+                              musicUrl: row.musicUrl,
+                              albumImage: row.albumImage,
+                              artistName: row.artistName,
+                            })
                           }
                         >
                           <FontAwesomeIcon

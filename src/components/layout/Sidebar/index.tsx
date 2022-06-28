@@ -138,6 +138,9 @@ function Sidebar() {
             <FontAwesomeIcon icon={faTimes} style={{ fontSize: '1.6rem' }} />
           </IconButton>
         )}
+        <Typography variant="h5" paddingLeft={1} fontWeight={600}>
+          Music WEB
+        </Typography>
         {/* <Box width={110} sx={{ cursor: 'pointer' }}>
           <NextLink href={'/'}>
             <Image
