@@ -11,7 +11,7 @@ import getMusicLink from '@lib/getMusicSrc';
 
 // redux-toolkit
 import { useAppSelector, useAppDispatch } from '@app/hooks';
-import { setOptions } from '@components/player/playerSlice';
+import { setPlaylist } from '@components/player/playerSlice';
 import { TrackList } from 'types/track';
 
 export interface ThumbnailCardProps {
@@ -45,25 +45,19 @@ function ThumbnailCard({
   const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const playAlbum = async (trackId: number) => {
-    const state = {
-      name: name,
-      musicSrc: await getMusicLink(trackId),
-      cover: albumImage,
-      singer: artistName,
-    };
 
-    dispatch(
-      setOptions({
-        clearPriorAudioLists: true,
-        // quietUpdate: false,
-        // loadAudioErrorPlayNext: false,
-        audioLists: [state, ...options.audioLists],
-        // preload: true,
-        // once: true,
-        // quietUpdate: false,
-      })
-    );
+  const playAlbum = (trackList) => {
+    let temp = [];
+    trackList.map((val) => {
+      temp.push({
+        name: val.name,
+        trackId: val.id,
+        musicSrc: val.musicUrl,
+        cover: val.albumImage,
+        singer: val.artistName,
+      });
+    });
+    dispatch(setPlaylist(temp));
   };
 
   return (
@@ -89,7 +83,7 @@ function ThumbnailCard({
               justifyContent: 'center',
             }}
           >
-            <IconButton title="재생">
+            <IconButton title="재생" onClick={() => playAlbum(trackList)}>
               <FontAwesomeIcon icon={faPlay} size="2x" color="#fff" />
             </IconButton>
             <Stack
