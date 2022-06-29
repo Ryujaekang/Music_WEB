@@ -19,7 +19,7 @@ import NextLink from 'next/link';
 import { useTheme } from '@mui/material/styles';
 import axios from '@lib/customAxios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-light-svg-icons';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { GetStaticPaths, GetStaticProps, GetServerSideProps } from 'next';
 import { AllSearch } from 'types/search';
 

@@ -228,7 +228,11 @@ function Artist({ artistData }: ArtistProps) {
                     가나다순
                   </Link>
                 </Stack>
-                <PlayGroupChip />
+                <PlayGroupChip
+                  rows={trackList}
+                  selected={selected}
+                  onChangeSelected={onChangeSelected}
+                />
               </Stack>
               {smUp ? (
                 <TrackTable

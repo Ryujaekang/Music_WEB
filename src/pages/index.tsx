@@ -53,7 +53,7 @@ function Home({ top100, newAlbumList, channel }: HomeProps) {
       </ContainerBox> */}
       <ContainerBox>
         <Typography variant="h6" component="div">
-          <NextLink href={'/new/track'}>최신음악</NextLink> <FontAwesomeIcon icon={faAngleRight} />
+          <NextLink href={'/new/album'}>최신음악</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
         <SwiperCard items={newAlbumList} likeInfoList={newAlbumLikes?.likeInfoList} />
       </ContainerBox>
