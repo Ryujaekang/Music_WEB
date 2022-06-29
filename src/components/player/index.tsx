@@ -54,16 +54,16 @@ const Player = (props: any) => {
   return (
     <ReactJkMusicPlayer
       audioLists={playlist}
+      quietUpdate={false}
+      clearPriorAudioLists={true}
       locale={customLocale}
       glassBg
       showMediaSession
       mode={'full'}
       preload={true}
       spaceBar={true}
-      remember={true}
+      // remember={true}
       showMiniProcessBar={true}
-      quietUpdate
-      clearPriorAudioLists={true}
       showDestroy={true}
       showDownload={false}
       showReload={true}

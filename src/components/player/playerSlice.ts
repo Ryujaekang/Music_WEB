@@ -24,10 +24,11 @@ export const playerSlice = createSlice({
     setPlaylist: (state, action: PayloadAction) => {
       console.log('action.payload', action.payload);
       // state.playlist = state.playlist.concat(action.payload);
+      console.log('action.payload.length', action.payload.length);
       if (action.payload.length > 0) {
-        state.playlist = [...state.playlist, ...action.payload];
+        state.playlist = [...action.payload, ...state.playlist];
       } else {
-        state.playlist = [...state.playlist, action.payload];
+        state.playlist = [action.payload, ...state.playlist];
       }
     },
   },
