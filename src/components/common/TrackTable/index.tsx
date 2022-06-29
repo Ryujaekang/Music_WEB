@@ -23,6 +23,7 @@ import { CustomMenu } from '..';
 import Image from 'next/image';
 import WaveRanking from '../WaveRanking';
 import { Like } from 'types/like';
+import { ChartTrack } from 'types/track';
 import getMusicLink from '@lib/getMusicSrc';
 
 // redux-toolkit
@@ -76,7 +77,7 @@ type TableHead = {
 
 interface TrackTableProps {
   tableHead?: TableHead[];
-  rows: object[] | undefined;
+  rows: ChartTrack[];
   selected: string[];
   onChangeSelected: (val: string[]) => void;
   likeInfo?: Like[];
@@ -124,7 +125,7 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
 
   const isSelected = (row) => selected.indexOf(row) !== -1;
 
-  const showCartHandler = (i) => {
+  const showCartHandler = (i: number) => {
     setHoveredRow(i);
   };
 
@@ -143,7 +144,6 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
     dispatch(setPlaylist(state));
   };
 
-  console.log('selected', selected);
   return (
     <>
       <TableContainer>
@@ -154,7 +154,7 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
             onSelectAllClick={handleSelectAllClick}
             rowCount={rows.length}
           />
-          <TableBody>
+          <TableBody onMouseLeave={hideCartHandler}>
             {rows.map((row, index) => {
               const isLike = likeInfo && Boolean(likeInfo[index].isLike);
 
@@ -170,7 +170,7 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
                   tabIndex={-1}
                   key={row.id}
                   selected={isItemSelected}
-                  onMouseLeave={hideCartHandler}
+                  // onMouseLeave={hideCartHandler}
                   onMouseEnter={() => showCartHandler(index)}
                 >
                   <TableCell padding="checkbox">
@@ -294,7 +294,13 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
                 </TableRow>
               );
             })}
-            <CustomMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+            <CustomMenu
+              anchorEl={anchorEl}
+              setAnchorEl={setAnchorEl}
+              trackId={rows[hoveredRow]?.id}
+              albumId={rows[hoveredRow]?.albumId}
+              artistId={rows[hoveredRow]?.artistId}
+            />
           </TableBody>
         </Table>
       </TableContainer>

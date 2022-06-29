@@ -16,6 +16,7 @@ import axios from '@lib/customAxios';
 import { useRouter } from 'next/router';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { TrackList } from 'types/track';
+import useRequest from '@lib/useRequest';
 
 interface NewProps {
   newData: {
@@ -38,6 +39,17 @@ function New({ newData }: NewProps) {
   useEffect(() => {
     router.push(`/new/${tabType}`);
   }, [tabType]);
+
+  const newAlbumIdAry = newData.list.map((item) => item.id).toString();
+
+  const { data: newAlbumLikes } = useRequest(
+    newAlbumIdAry
+      ? {
+          url: `/api/like`,
+          params: { type: 'album', ids: newAlbumIdAry },
+        }
+      : null
+  );
 
   return (
     <>
@@ -91,6 +103,7 @@ function New({ newData }: NewProps) {
                       name={item.name}
                       artistId={item.artistId}
                       artistName={item.artistName}
+                      likeInfo={newAlbumLikes && newAlbumLikes?.likeInfoList[i]}
                     />
                   </Grid>
                 ))}
