@@ -186,7 +186,11 @@ function Album({ albumData }: AlbumProps) {
                 display="flex"
                 sx={{ justifyContent: 'flex-end', paddingTop: 3, paddingBottom: 3 }}
               >
-                <PlayGroupChip />
+                <PlayGroupChip
+                  rows={trackList}
+                  selected={selected}
+                  onChangeSelected={onChangeSelected}
+                />
               </Box>
               {smUp ? (
                 <TrackTable
