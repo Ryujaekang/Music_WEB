@@ -10,6 +10,10 @@ module.exports = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['cdn.pixabay.com', 'rateye.s3.ap-northeast-2.amazonaws.com'],
+    domains: [
+      'cdn.pixabay.com',
+      'rateye.s3.ap-northeast-2.amazonaws.com',
+      'usercontent.jamendo.com',
+    ],
   },
 };
