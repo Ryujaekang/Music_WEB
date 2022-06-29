@@ -56,7 +56,11 @@ function New({ newData }: NewProps) {
       {tabType === 'track' && (
         <ContainerBox>
           <Stack direction={smUp ? 'row' : 'column'} spacing={1} justifyContent="flex-end">
-            <PlayGroupChip />
+            <PlayGroupChip
+              rows={newData.list}
+              selected={selected}
+              onChangeSelected={onChangeSelected}
+            />
           </Stack>
         </ContainerBox>
       )}

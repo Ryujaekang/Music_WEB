@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
 import { faPlay, faCheck, faRandom } from '@fortawesome/free-solid-svg-icons';
 import ChipItem from './ChipItem';
@@ -57,6 +57,14 @@ function PlayGroupChip({ rows, selected, onChangeSelected }) {
     onChangeSelected([]);
     setChecked(false);
   };
+
+  useEffect(() => {
+    if (rows.length === selected.length) {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+  }, [selected]);
 
   return (
     <Stack direction="row" spacing={1} alignItems={'center'}>
