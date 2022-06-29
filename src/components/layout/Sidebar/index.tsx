@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { styled, useTheme, Theme } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { useRouter } from 'next/router';
@@ -138,18 +137,9 @@ function Sidebar() {
             <FontAwesomeIcon icon={faTimes} style={{ fontSize: '1.6rem' }} />
           </IconButton>
         )}
-        <Typography variant="h5" paddingLeft={1} fontWeight={600}>
-          Music WEB
+        <Typography variant="h5" paddingLeft={1} fontWeight={600} sx={{ cursor: 'pointer' }}>
+          <NextLink href={'/'}>Music WEB</NextLink>
         </Typography>
-        {/* <Box width={110} sx={{ cursor: 'pointer' }}>
-          <NextLink href={'/'}>
-            <Image
-              layout="responsive"
-              src={isColormode ? MuOnSymbolDark : MuOnSymbolWhite}
-              alt="MuOn Logo"
-            />
-          </NextLink>
-        </Box> */}
       </Box>
       <MenuList />
       <Box sx={{ width: '100%', padding: '0px 16px 10px 16px' }}>

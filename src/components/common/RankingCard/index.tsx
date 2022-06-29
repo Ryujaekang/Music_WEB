@@ -149,6 +149,7 @@ function RankingCard({
               whiteSpace: 'nowrap',
               cursor: 'pointer',
             }}
+            onClick={() => playMusic()}
           >
             {name}
           </Typography>
