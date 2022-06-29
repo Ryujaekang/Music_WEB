@@ -18,7 +18,7 @@ function ServiceOFF() {
           <Typography variant="h1" fontWeight={500}>
             잠깐~!
           </Typography>
-          <Typography variant="h2">지금은 개발 중인뮤~</Typography>
+          <Typography variant="h2">지금은 개발 중인 페이지입니다.</Typography>
           <Box>
             <Typography color={'text.secondary'}>현재 개발중인 페이지로</Typography>
             <Typography color={'text.secondary'}>업데이트를 기대해주세요</Typography>
