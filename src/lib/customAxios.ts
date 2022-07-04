@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { useSession } from 'next-auth/react';
+import { useSession, getSession } from 'next-auth/react';
 
 const axios = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -7,10 +7,12 @@ const axios = Axios.create({
 
 // 요청 인터셉터 추가하기
 axios.interceptors.request.use(
-  function (config) {
+  async (config) => {
     // 요청이 전달되기 전에 작업 수행
-    //  const { data } = useSession();
-    //  const { accessToken } = data;
+
+    // const { data: session } = await useSession();
+    // const { accessToken } = session;
+    // console.log('accessToken', accessToken);
     //   const decode = jwt.decode(accessToken);
     //   const nowDate = new Date().getTime() / 1000;
 
@@ -25,8 +27,8 @@ axios.interceptors.request.use(
     //         },
     //       }
     //     );
-    //     // 리프레쉬 토큰 발급 서버 요청
 
+    //     // 리프레쉬 토큰 발급 서버 요청
     //     const { refreshToken } = data.data;
 
     //     accessToken = refreshToken;

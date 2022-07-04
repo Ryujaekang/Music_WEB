@@ -5,6 +5,7 @@ import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import axios from '@lib/customAxios';
 // import EmailProvider from "next-auth/providers/email"
 // import AppleProvider from "next-auth/providers/apple"
 
@@ -21,7 +22,7 @@ export default NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        email: { label: '이메일', type: 'email', placeholder: 'user@email.com' },
+        email: { label: '이메일', type: 'email', placeholder: 'example@email.com' },
         password: { label: '패스워드', type: 'password', placeholder: 'password' },
       },
       async authorize(credentials, req) {
@@ -31,16 +32,18 @@ export default NextAuth({
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        const res = await fetch('http://192.168.0.118:8080/api/v1/user/login', {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: { 'Content-Type': 'application/json' },
+        console.log('credentials : ', credentials);
+        const res = await axios.post('/user/login', {
+          email: credentials?.email,
+          password: credentials?.password,
         });
-        const user = await res.json();
+        console.log('res.data : ', res.data);
+
+        const userData = res.data;
 
         // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user;
+        if (userData.result !== 'FAIL' && userData.data) {
+          return userData.data;
         }
         // Return null if user data could not be retrieved
         return null;
@@ -79,6 +82,13 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
     }),
     TwitterProvider({
       clientId: process.env.TWITTER_ID,
@@ -146,8 +156,28 @@ export default NextAuth({
   callbacks: {
     // async signIn({ user, account, profile, email, credentials }) { return true },
     // async redirect({ url, baseUrl }) { return baseUrl },
-    // async session({ session, token, user }) { return session },
-    // async jwt({ token, user, account, profile, isNewUser }) { return token }
+    async jwt({ token, user, account, profile, isNewUser }) {
+      console.log('jwt token : ', token);
+      console.log('jwt user : ', user);
+      console.log('jwt account : ', account);
+      console.log('jwt profile : ', profile);
+      console.log('jwt isNewUser : ', isNewUser);
+      user && (token.user = user.user);
+      user && (token.accessToken = user.token);
+      account && (token.account = account);
+
+      return token;
+    },
+    async session({ session, token, user }) {
+      // Send properties to the client, like an access_token from a provider.
+      // console.log('session : ', session);
+      // console.log('token : ', token);
+      token.user && (session.user = token.user);
+      session.accessToken = token.accessToken;
+      session.account = token.account;
+
+      return session;
+    },
   },
 
   // Events are useful for logging

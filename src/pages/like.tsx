@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@components/layout';
 import { Stack, Button, Link, Typography, useMediaQuery, Grid } from '@mui/material';
 import {
@@ -14,12 +14,46 @@ import {
 } from '@components/common';
 import { useTheme } from '@mui/material/styles';
 import axios from '@lib/customAxios';
+import { useSession } from 'next-auth/react';
+import useRequest from '@lib/useRequest';
+import useSWR from 'swr';
 
 function Like({ like }) {
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
+  const [content, setContent] = useState();
+
   const [tabType, setTabType] = useState(tabItem[0].value);
   const [selected, setSelected] = useState<string[]>([]);
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const fetcher = (url, token) =>
+    axios.get(url, { headers: { authorization: 'Bearer ' + token } }).then((res) => res.data);
+
+  const { data, error } = useSWR([`/api/my/likeables`, session?.accessToken], fetcher);
+
+  // const { data } = useRequest({
+  //   url: `/api/my/likeables`,
+  //   headers: { authorization: 'Bearer ' + session?.accessToken },
+  //   params: { type: 'track' },
+  // });
+
+  console.log('datadata', data);
+
+  // // Fetch content from protected route
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { data } = await axios.get('/track/likeables', {
+  //       headers: { authorization: `Bearer ${session?.accessToken}` },
+  //     });
+
+  //     if (data) {
+  //       setContent(data);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [session]);
 
   const onChangeSelected = (val: string[]) => {
     setSelected(val);
@@ -27,8 +61,17 @@ function Like({ like }) {
 
   const rows = [];
 
+  // When rendering client side don't display anything until loading is complete
+  if (typeof window !== 'undefined' && loading) return null;
+
+  // If no session exists, display access denied message
+  if (!session) {
+    return <ServiceOFF />;
+  }
+
+  // If session exists, display content
   return (
-    <ServiceOFF />
+    <div>session 실행</div>
     // <>
     //   <ContainerBox sx={{ marginTop: 2 }}>
     //     <Stack direction="row" spacing={1} alignItems={'center'}>
@@ -79,7 +122,7 @@ function Like({ like }) {
     //           아티스트순
     //         </Link>
     //       </Stack>
-    //       <PlayGroupChip />
+    //       <PlayGroupChip rows={rows} selected={selected} onChangeSelected={onChangeSelected} />
     //     </Stack>
     //   </ContainerBox>
     //   <ContainerBox>
@@ -101,9 +144,11 @@ function Like({ like }) {
     //                 <ThumbnailCard
     //                   key={i}
     //                   id={item.id}
-    //                   image={item.imgUrl}
-    //                   name={item.trackName}
-    //                   artistName={item.artist}
+    //                   image={item.image}
+    //                   name={item.name}
+    //                   artistId={item.artistId}
+    //                   artistName={item.artistName}
+    //                   //  likeInfo={newAlbumLikes && newAlbumLikes?.likeInfoList[i]}
     //                 />
     //               </Grid>
     //             ))}
@@ -121,17 +166,17 @@ Like.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export async function getStaticProps() {
-  const { data: like } = await axios.get('/track/likeables', {
-    params: { authorization: '' },
-  });
+// export async function getStaticProps() {
+//   const { data: like } = await axios.get('/track/likeables', {
+//     params: { authorization: '' },
+//   });
 
-  return {
-    props: {
-      like: like.data,
-    }, // will be passed to the page component as props
-  };
-}
+//   return {
+//     props: {
+//       like: like.data,
+//     }, // will be passed to the page component as props
+//   };
+// }
 
 export default Like;
 

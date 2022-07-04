@@ -11,6 +11,7 @@ import NextLink from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import useRequest from '@lib/useRequest';
+import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 
 interface HomeProps {
   top100: Chart;
@@ -20,6 +21,7 @@ interface HomeProps {
 
 function Home({ top100, newAlbumList, channel }: HomeProps) {
   const { trackList: top100TrackList } = top100 || {};
+  const { data } = useSession();
 
   // const channelIdAry = channel.list.map((item) => item.id).toString();
   const newAlbumIdAry = newAlbumList.map((item) => item.id).toString();

@@ -14,6 +14,7 @@ import {
   InputAdornment,
   useTheme,
   CircularProgress,
+  Avatar,
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -88,8 +89,6 @@ function Header() {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [searchOpen, setSearchOpen] = useState(false);
-  const [options, setOptions] = useState<readonly SerachKeyword[]>([]);
-  const searchLoading = searchOpen && options.length === 0;
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -105,42 +104,19 @@ function Header() {
     dispatch(openToggle(!open));
   };
 
-  useEffect(() => {
-    let active = true;
-    // if (!searchLoading) {
-    //   return undefined;
-    // }
-
-    (async () => {
-      const { data: searchData } = await axios.get(`/api/search`, {
-        params: { keyword: inputValue },
-      });
-      // const { data: searchData } = await useRequest(
-      //   inputValue
-      //     ? {
-      //         url: `/api/search`,
-      //         params: { keyword: inputValue },
-      //       }
-      //     : null
-      // );
-      if (active) {
-        setOptions([...searchData]);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [searchLoading, inputValue]);
-
-  useEffect(() => {
-    if (!searchOpen) {
-      setOptions([]);
-    }
-  }, [searchOpen]);
+  const { data: searchData = [] } = useRequest(
+    inputValue
+      ? {
+          url: `/api/search`,
+          params: { keyword: inputValue },
+        }
+      : null
+  );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
+  const searchLoading = searchOpen && searchData?.length === 0;
 
+  console.log('session', session);
   return (
     <>
       <AppBar position="fixed" open={miniOpen} elevation={0}>
@@ -174,7 +150,7 @@ function Header() {
               setInputValue(newInputValue);
             }}
             disableClearable
-            options={options}
+            options={searchData}
             getOptionLabel={(option) => (option.keyword ? option.keyword : '')}
             loading={searchLoading}
             renderInput={(params) => (
@@ -240,44 +216,26 @@ function Header() {
                 <FontAwesomeIcon icon={faBell} style={{ fontSize: '2rem' }} />
               </Badge>
             </IconButton> */}
-            <IconButton size="large" aria-label="account of current user" color="inherit">
-              <FontAwesomeIcon icon={faUserCircle} style={{ fontSize: '2rem' }} />
-            </IconButton>
-            {/* <p>
-              {!session && (
-                <>
-                  <span>You are not signed in</span>
-                  <a
-                    href={`/api/auth/signin`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signIn();
-                    }}
-                  >
-                    Sign in
-                  </a>
-                </>
-              )}
-              {session?.user && (
-                <>
-                  <span style={{ backgroundImage: `url(${session.user.image})` }} />
-                  <span>
-                    <small>Signed in as</small>
-                    <br />
-                    <strong>{session.user.email || session.user.name}</strong>
-                  </span>
-                  <a
-                    href={`/api/auth/signout`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signOut();
-                    }}
-                  >
-                    Sign out
-                  </a>
-                </>
-              )}
-            </p> */}
+            {!session && (
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                color="inherit"
+                onClick={() => signIn()}
+              >
+                <FontAwesomeIcon icon={faUserCircle} style={{ fontSize: '2rem' }} />
+              </IconButton>
+            )}
+            {session?.user && (
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                color="inherit"
+                // onClick={() => signOut()}
+              >
+                <Avatar alt="Remy Sharp" src={session.user.image} sx={{ width: 24, height: 24 }} />
+              </IconButton>
+            )}
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
