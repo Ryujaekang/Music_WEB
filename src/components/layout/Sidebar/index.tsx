@@ -65,7 +65,7 @@ const MiniDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'op
 );
 
 function Sidebar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { open, miniOpen } = useAppSelector((state) => state.sidebar);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -95,8 +95,6 @@ function Sidebar() {
   const handleMiniDrawerToggle = () => {
     dispatch(miniOpenToggle(!miniOpen));
   };
-
-  console.log('session', session);
 
   const content = (
     <Paper
