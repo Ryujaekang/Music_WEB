@@ -9,7 +9,7 @@ const mine = {
       id: 'myLike',
       title: '좋아요',
       type: 'item',
-      url: '/like',
+      url: '/like/track',
       icon: faHeart,
     },
     {
