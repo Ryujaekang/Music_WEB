@@ -7,6 +7,7 @@ import {
   CustomSelect,
   CustomTab,
   MobileTrackList,
+  NonLogin,
   PlayGroupChip,
   ServiceOFF,
   ThumbnailCard,
@@ -48,7 +49,7 @@ function Like() {
 
   // If no session exists, display access denied message
   if (!session) {
-    return <ServiceOFF />;
+    return <NonLogin />;
   }
 
   // If session exists, display content
