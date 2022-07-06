@@ -19,10 +19,10 @@ import { Likes } from 'types/like';
 interface Top100Props {
   trackList: ChartTrack[];
   likeInfoList: Likes;
-  postTrackLike: (id: number | null, likeableId: number) => void;
+  postLike: (id: number | null, likeableId: number, likeableType: string) => void;
 }
 
-function Top100({ trackList, likeInfoList, postTrackLike }: Top100Props) {
+function Top100({ trackList, likeInfoList, postLike }: Top100Props) {
   const { mode } = useColorMode();
 
   return (
@@ -79,7 +79,7 @@ function Top100({ trackList, likeInfoList, postTrackLike }: Top100Props) {
                 wave={item.wave}
                 musicUrl={item.musicUrl}
                 likeInfo={likeInfoList[i]}
-                postTrackLike={postTrackLike}
+                postLike={postLike}
               />
             </SwiperSlide>
           );

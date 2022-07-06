@@ -44,7 +44,7 @@ export interface RankingCardProps {
   albumId: number;
   musicUrl: string;
   likeInfo: Like;
-  postTrackLike: (id: number | null, likeableId: number) => void;
+  postLike: (id: number | null, likeableId: number, likeableType: string) => void;
 }
 
 function RankingCard({
@@ -59,7 +59,7 @@ function RankingCard({
   artistName,
   musicUrl,
   likeInfo,
-  postTrackLike,
+  postLike,
 }: RankingCardProps) {
   const theme = useTheme();
   const [hover, setHover] = useState(false);
@@ -70,8 +70,7 @@ function RankingCard({
 
   const handleChange = async () => {
     try {
-      const data = await postTrackLike(likeInfo.id, likeInfo.likeableId);
-      console.log('좋아요 데이터' + data.isLike);
+      const data = await postLike(likeInfo.id, likeInfo.likeableId, 'track');
       setChecked(Boolean(data.isLike));
     } catch {
       console.error('Like error');

@@ -19,9 +19,10 @@ import { Likes } from 'types/like';
 interface SwiperCardProps {
   items: ThumbnailCardProps[];
   likeInfoList: Likes;
+  postLike: (id: number | null, likeableId: number, likeableType: string) => void;
 }
 
-function SwiperCard({ items, likeInfoList }: SwiperCardProps) {
+function SwiperCard({ items, likeInfoList, postLike }: SwiperCardProps) {
   const { mode } = useColorMode();
 
   return (
@@ -68,6 +69,7 @@ function SwiperCard({ items, likeInfoList }: SwiperCardProps) {
                 artistName={item.artistName}
                 trackList={item.trackList}
                 likeInfo={likeInfoList && likeInfoList[i]}
+                postLike={postLike}
               />
             </SwiperSlide>
           );

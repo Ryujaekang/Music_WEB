@@ -36,7 +36,7 @@ function Home({ top100, newAlbumList }: HomeProps) {
     params: { type: 'album', ids: newAlbumIdAry, token: session?.accessToken },
   });
 
-  const postTrackLike = async (id: number | null, likeableId: number) => {
+  const postLike = async (id: number | null, likeableId: number, likeableType: string) => {
     if (id) {
       const { data } = await Axios.put('/api/like', {
         id,
@@ -46,14 +46,14 @@ function Home({ top100, newAlbumList }: HomeProps) {
     } else {
       const { data } = await Axios.post('/api/like', {
         likeableId,
-        likeableType: 'track',
+        likeableType,
         token: session?.accessToken,
       });
       return data;
     }
   };
 
-  if (!top100Likes) return <BasicLoading />;
+  if (!top100Likes || !newAlbumLikes) return <BasicLoading />;
 
   return (
     <>
@@ -67,14 +67,18 @@ function Home({ top100, newAlbumList }: HomeProps) {
         <Top100
           trackList={top100TrackList || []}
           likeInfoList={top100Likes.likeInfoList}
-          postTrackLike={postTrackLike}
+          postLike={postLike}
         />
       </ContainerBox>
       <ContainerBox>
         <Typography variant="h6" component="div">
           <NextLink href={'/new/album'}>최신음악</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
-        <SwiperCard items={newAlbumList} likeInfoList={newAlbumLikes?.likeInfoList} />
+        <SwiperCard
+          items={newAlbumList}
+          likeInfoList={newAlbumLikes.likeInfoList}
+          postLike={postLike}
+        />
       </ContainerBox>
     </>
   );
