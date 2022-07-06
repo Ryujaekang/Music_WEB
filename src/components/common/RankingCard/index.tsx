@@ -61,7 +61,7 @@ function RankingCard({
 }: RankingCardProps) {
   const theme = useTheme();
   const [hover, setHover] = useState(false);
-  const [checked, setChecked] = useState(Boolean(likeInfo.isLike));
+  const [checked, setChecked] = useState(Boolean(likeInfo?.isLike));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
