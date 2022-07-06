@@ -45,7 +45,7 @@ function New({ newData }: NewProps) {
   const { data: newAlbumLikes } = useRequest(
     newAlbumIdAry
       ? {
-          url: `/api/like`,
+          url: `/api/likeShow`,
           params: { type: 'album', ids: newAlbumIdAry },
         }
       : null

@@ -19,7 +19,7 @@ interface Top100Props {
   trackList: ChartTrack[];
 }
 
-function Top100({ trackList }: Top100Props) {
+function Top100({ trackList, likeInfoList }: Top100Props) {
   const { mode } = useColorMode();
 
   return (
@@ -75,6 +75,7 @@ function Top100({ trackList }: Top100Props) {
                 rank={item.rank}
                 wave={item.wave}
                 musicUrl={item.musicUrl}
+                likeInfo={likeInfoList && likeInfoList[i]}
               />
             </SwiperSlide>
           );

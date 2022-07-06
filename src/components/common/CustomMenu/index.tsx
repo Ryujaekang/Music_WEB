@@ -14,12 +14,20 @@ import {
 interface CustomMenuProps {
   anchorEl: null | HTMLElement;
   setAnchorEl: (event: null | HTMLElement) => void;
+  playMusic: () => void;
   trackId?: number;
   albumId?: number;
   artistId?: number;
 }
 
-function CustomMenu({ anchorEl, setAnchorEl, trackId, albumId, artistId }: CustomMenuProps) {
+function CustomMenu({
+  anchorEl,
+  setAnchorEl,
+  playMusic,
+  trackId,
+  albumId,
+  artistId,
+}: CustomMenuProps) {
   const router = useRouter();
   const open = Boolean(anchorEl);
 
@@ -51,7 +59,7 @@ function CustomMenu({ anchorEl, setAnchorEl, trackId, albumId, artistId }: Custo
         </ListItemIcon>
         <ListItemText>다운로드</ListItemText>
       </MenuItem>
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={playMusic}>
         <ListItemIcon>
           <FontAwesomeIcon icon={faPlus} />
         </ListItemIcon>

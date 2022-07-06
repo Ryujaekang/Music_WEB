@@ -79,9 +79,7 @@ function PlaylistCard({ title, writer, like }: PlaylistCardProps) {
               onChange={handleChange}
               inputProps={{ 'aria-label': 'controlled' }}
               color="primary"
-              icon={
-                <FontAwesomeIcon icon={faHeartRE} style={{ fontSize: '1.6rem', color: '#000' }} />
-              }
+              icon={<FontAwesomeIcon icon={faHeartRE} style={{ fontSize: '1.6rem' }} />}
               checkedIcon={<FontAwesomeIcon icon={faHeart} style={{ fontSize: '1.6rem' }} />}
             />
             <Typography>{like.amount}</Typography>

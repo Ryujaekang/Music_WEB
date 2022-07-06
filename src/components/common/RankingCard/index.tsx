@@ -30,6 +30,7 @@ import getMusicLink from '@lib/getMusicSrc';
 import { useAppSelector, useAppDispatch } from '@app/hooks';
 import { setPlaylist } from '@components/player/playerSlice';
 import CustomAxios from '@lib/customAxios';
+import { Like } from 'types/like';
 
 export interface RankingCardProps {
   id: number;
@@ -42,6 +43,7 @@ export interface RankingCardProps {
   artistName: string;
   albumId: number;
   musicUrl: string;
+  likeInfo: Like;
 }
 
 function RankingCard({
@@ -55,10 +57,11 @@ function RankingCard({
   artistId,
   artistName,
   musicUrl,
+  likeInfo,
 }: RankingCardProps) {
   const theme = useTheme();
   const [hover, setHover] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(Boolean(likeInfo.isLike));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
@@ -80,10 +83,10 @@ function RankingCard({
       singer: artistName,
     };
 
-    console.log('state', state);
-
     dispatch(setPlaylist(state));
   };
+
+  console.log('likeInfo', likeInfo);
 
   return (
     <Box
@@ -196,6 +199,7 @@ function RankingCard({
           <CustomMenu
             anchorEl={anchorEl}
             setAnchorEl={setAnchorEl}
+            playMusic={playMusic}
             trackId={id}
             albumId={albumId}
             artistId={artistId}

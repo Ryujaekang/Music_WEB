@@ -50,7 +50,7 @@ function Chart({ chartData }: ChartProps) {
   const { data: chartLikes } = useRequest(
     chartIdAry
       ? {
-          url: `/api/like`,
+          url: `/api/likeShow`,
           params: { type: 'track', ids: chartIdAry },
         }
       : null

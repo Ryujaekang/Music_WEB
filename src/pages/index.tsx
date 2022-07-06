@@ -23,18 +23,26 @@ function Home({ top100, newAlbumList, channel }: HomeProps) {
   const { trackList: top100TrackList } = top100 || {};
   const { data } = useSession();
 
-  // const channelIdAry = channel.list.map((item) => item.id).toString();
+  const top100IdAry = top100TrackList.map((item) => item.id).toString();
   const newAlbumIdAry = newAlbumList.map((item) => item.id).toString();
 
-  // const { data: channelLikes } = useRequest({
-  //   url: `/api/like`,
-  //   params: { type: 'album', ids: channelIdAry },
-  // });
+  const { data: top100Likes } = useRequest({
+    url: `/api/likeShow`,
+    params: { type: 'track', ids: top100IdAry },
+  });
+
+  console.log('top100Likes', top100Likes);
 
   const { data: newAlbumLikes } = useRequest({
-    url: `/api/like`,
+    url: `/api/likeShow`,
     params: { type: 'album', ids: newAlbumIdAry },
   });
+
+  const postTrackLike = async (id: number) => {
+    const { data } = await axios.post('/api/channel', {
+      params: { id },
+    });
+  };
 
   return (
     <>
@@ -45,7 +53,7 @@ function Home({ top100, newAlbumList, channel }: HomeProps) {
         <Typography variant="h6" component="div">
           <NextLink href={'/chart/now'}>TOP 100</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
-        <Top100 trackList={top100TrackList || []} />
+        <Top100 trackList={top100TrackList || []} likeInfoList={top100Likes?.likeInfoList} />
       </ContainerBox>
       {/* <ContainerBox>
         <Typography variant="h6" component="div">

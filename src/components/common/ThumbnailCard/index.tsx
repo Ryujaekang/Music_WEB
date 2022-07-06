@@ -13,6 +13,7 @@ import getMusicLink from '@lib/getMusicSrc';
 import { useAppSelector, useAppDispatch } from '@app/hooks';
 import { setPlaylist } from '@components/player/playerSlice';
 import { TrackList } from 'types/track';
+import { Like } from 'types/like';
 
 export interface ThumbnailCardProps {
   id: number;
@@ -21,6 +22,7 @@ export interface ThumbnailCardProps {
   artistId: number;
   artistName: string;
   trackList: TrackList[];
+  likeInfo: Like;
 }
 
 function ThumbnailCard({
@@ -114,6 +116,7 @@ function ThumbnailCard({
             <CustomMenu
               anchorEl={anchorEl}
               setAnchorEl={setAnchorEl}
+              playMusic={() => playAlbum(trackList)}
               albumId={id}
               artistId={artistId}
             />

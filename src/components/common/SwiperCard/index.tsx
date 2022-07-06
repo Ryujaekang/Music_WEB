@@ -14,9 +14,11 @@ import styles from './swiperCard.module.scss';
 import { Grid, Pagination } from 'swiper';
 import ThumbnailCard, { ThumbnailCardProps } from '../ThumbnailCard';
 import { useColorMode } from '@theme/index';
+import { Likes } from 'types/like';
 
 interface SwiperCardProps {
   items: ThumbnailCardProps[];
+  likeInfoList: Likes;
 }
 
 function SwiperCard({ items, likeInfoList }: SwiperCardProps) {
