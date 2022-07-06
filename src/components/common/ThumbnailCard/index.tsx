@@ -13,6 +13,7 @@ import getMusicLink from '@lib/getMusicSrc';
 import { useAppSelector, useAppDispatch } from '@app/hooks';
 import { setPlaylist } from '@components/player/playerSlice';
 import { TrackList } from 'types/track';
+import { Like } from 'types/like';
 
 export interface ThumbnailCardProps {
   id: number;
@@ -21,6 +22,8 @@ export interface ThumbnailCardProps {
   artistId: number;
   artistName: string;
   trackList: TrackList[];
+  likeInfo: Like;
+  postLike: (id: number | null, likeableId: number, likeableType: string) => void;
 }
 
 function ThumbnailCard({
@@ -31,6 +34,7 @@ function ThumbnailCard({
   artistName,
   trackList,
   likeInfo,
+  postLike,
 }: ThumbnailCardProps) {
   const [hover, setHover] = useState(false);
   const isLike = Boolean(likeInfo?.isLike);
@@ -38,8 +42,13 @@ function ThumbnailCard({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+  const handleChange = async () => {
+    try {
+      const data = await postLike(likeInfo.id, likeInfo.likeableId, 'album');
+      setChecked(Boolean(data.isLike));
+    } catch {
+      console.error('Like error');
+    }
   };
 
   const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -114,6 +123,7 @@ function ThumbnailCard({
             <CustomMenu
               anchorEl={anchorEl}
               setAnchorEl={setAnchorEl}
+              playMusic={() => playAlbum(trackList)}
               albumId={id}
               artistId={artistId}
             />

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@components/layout';
 import {
+  BasicLoading,
   ChoiceSlide,
   ContainerBox,
   MobileTrackList,
@@ -101,18 +102,7 @@ function Artist({ artistData }: ArtistProps) {
   };
 
   if (isFallback) {
-    return (
-      <Container
-        sx={{
-          display: 'flex',
-          height: `calc(100vh - 180px)`,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CircularProgress />
-      </Container>
-    );
+    return <BasicLoading />;
   }
 
   return (

@@ -9,17 +9,39 @@ export interface LikeProps {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<LikeProps>) {
   const {
-    query: { type, ids },
+    body: { likeableId, id, likeableType, token },
   } = req;
 
   try {
-    const { data } = await axios
-      .get(`/like/show`, {
-        params: { type, ids },
-      })
-      .then((res) => res.data);
+    if (req.method === 'POST') {
+      const { data } = await axios
+        .post(
+          `/like`,
+          {
+            likeableId,
+            likeableType,
+          },
+          {
+            headers: {
+              authorization: 'Bearer ' + token,
+            },
+          }
+        )
+        .then((res) => res.data);
 
-    res.status(200).json(data);
+      res.status(200).json(data);
+    }
+
+    if (req.method === 'PUT') {
+      const { data } = await axios
+        .put(`/like/${id}`, {
+          headers: {
+            authorization: 'Bearer ' + token,
+          },
+        })
+        .then((res) => res.data);
+      res.status(200).json(data);
+    }
   } catch (err) {
     res.status(500).json({ error: 'failed to load data' });
   }

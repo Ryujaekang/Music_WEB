@@ -157,11 +157,11 @@ export default NextAuth({
     // async signIn({ user, account, profile, email, credentials }) { return true },
     // async redirect({ url, baseUrl }) { return baseUrl },
     async jwt({ token, user, account, profile, isNewUser }) {
-      console.log('jwt token : ', token);
-      console.log('jwt user : ', user);
-      console.log('jwt account : ', account);
-      console.log('jwt profile : ', profile);
-      console.log('jwt isNewUser : ', isNewUser);
+      // console.log('jwt token : ', token);
+      // console.log('jwt user : ', user);
+      // console.log('jwt account : ', account);
+      // console.log('jwt profile : ', profile);
+      // console.log('jwt isNewUser : ', isNewUser);
       user && (token.user = user.user);
       user && (token.accessToken = user.token);
       account && (token.account = account);

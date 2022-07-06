@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@components/layout';
-import { ContainerBox } from '@components/common';
+import { BasicLoading, ContainerBox } from '@components/common';
 import Image from 'next/image';
 import { albumDefaultImage } from '@assets/Images';
 import {
@@ -73,18 +73,7 @@ function Track({ trackData }: TrackProps) {
   };
 
   if (isFallback) {
-    return (
-      <Container
-        sx={{
-          display: 'flex',
-          height: `calc(100vh - 180px)`,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CircularProgress />
-      </Container>
-    );
+    return <BasicLoading />;
   }
 
   return (
