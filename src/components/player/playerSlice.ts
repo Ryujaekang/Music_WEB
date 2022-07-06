@@ -22,9 +22,7 @@ export const playerSlice = createSlice({
     //   state.options = { ...state.options, ...action.payload };
     // },
     setPlaylist: (state, action: PayloadAction) => {
-      console.log('action.payload', action.payload);
       // state.playlist = state.playlist.concat(action.payload);
-      console.log('action.payload.length', action.payload.length);
       if (action.payload.length > 0) {
         state.playlist = [...action.payload, ...state.playlist];
       } else {

@@ -9,12 +9,15 @@ export interface LikeProps {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<LikeProps>) {
   const {
-    query: { type, ids },
+    query: { type, ids, token },
   } = req;
 
   try {
     const { data } = await axios
       .get(`/like/show`, {
+        headers: {
+          authorization: 'Bearer ' + token,
+        },
         params: { type, ids },
       })
       .then((res) => res.data);

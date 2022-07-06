@@ -14,12 +14,15 @@ import { Grid, Pagination } from 'swiper';
 import { RankingCard } from '@components/common';
 import { useColorMode } from '@theme/index';
 import { ChartTrack } from 'types/track';
+import { Likes } from 'types/like';
 
 interface Top100Props {
   trackList: ChartTrack[];
+  likeInfoList: Likes;
+  postTrackLike: (id: number | null, likeableId: number) => void;
 }
 
-function Top100({ trackList, likeInfoList }: Top100Props) {
+function Top100({ trackList, likeInfoList, postTrackLike }: Top100Props) {
   const { mode } = useColorMode();
 
   return (
@@ -75,7 +78,8 @@ function Top100({ trackList, likeInfoList }: Top100Props) {
                 rank={item.rank}
                 wave={item.wave}
                 musicUrl={item.musicUrl}
-                likeInfo={likeInfoList && likeInfoList[i]}
+                likeInfo={likeInfoList[i]}
+                postTrackLike={postTrackLike}
               />
             </SwiperSlide>
           );

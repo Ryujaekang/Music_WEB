@@ -24,7 +24,6 @@ function ChoiceSlide({ selected }) {
   const dispatch = useAppDispatch();
 
   const playMusic = (selected) => {
-    console.log('playMusic', selected);
     let temp = [];
     selected.map((val) => {
       temp.push({

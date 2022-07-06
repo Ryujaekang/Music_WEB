@@ -16,3 +16,4 @@ export { default as ServiceOFF } from './ServiceOFF';
 export { default as ArtistCard } from './ArtistCard';
 export { default as SwiperArtistCard } from './SwiperArtistCard';
 export { default as NonLogin } from './NonLogin';
+export { default as BasicLoading } from './BasicLoading';

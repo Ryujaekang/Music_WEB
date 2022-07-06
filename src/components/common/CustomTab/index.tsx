@@ -53,7 +53,6 @@ function CustomTab({ item, type, setType }: CustomTabProps) {
     setType(newValue);
   };
 
-  console.log('type,type', type);
   return (
     <Box>
       <StyledTabs value={type} onChange={handleChange}>

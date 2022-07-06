@@ -116,7 +116,6 @@ function Header() {
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const searchLoading = searchOpen && searchData?.length === 0;
 
-  console.log('session', session);
   return (
     <>
       <AppBar position="fixed" open={miniOpen} elevation={0}>

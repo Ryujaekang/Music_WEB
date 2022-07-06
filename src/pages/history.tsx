@@ -43,7 +43,6 @@ function History() {
     return <NonLogin />;
   }
 
-  console.log('trackList', trackList);
   return (
     <>
       <ContainerBox sx={{ marginTop: 2 }}>

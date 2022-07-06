@@ -44,6 +44,7 @@ export interface RankingCardProps {
   albumId: number;
   musicUrl: string;
   likeInfo: Like;
+  postTrackLike: (id: number | null, likeableId: number) => void;
 }
 
 function RankingCard({
@@ -58,16 +59,23 @@ function RankingCard({
   artistName,
   musicUrl,
   likeInfo,
+  postTrackLike,
 }: RankingCardProps) {
   const theme = useTheme();
   const [hover, setHover] = useState(false);
-  const [checked, setChecked] = useState(Boolean(likeInfo?.isLike));
+  const [checked, setChecked] = useState(Boolean(likeInfo.isLike));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+  const handleChange = async () => {
+    try {
+      const data = await postTrackLike(likeInfo.id, likeInfo.likeableId);
+      console.log('좋아요 데이터' + data.isLike);
+      setChecked(Boolean(data.isLike));
+    } catch {
+      console.error('Like error');
+    }
   };
 
   const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -86,7 +94,7 @@ function RankingCard({
     dispatch(setPlaylist(state));
   };
 
-  console.log('likeInfo', likeInfo);
+  // console.log('likeInfo', likeInfo);
 
   return (
     <Box
