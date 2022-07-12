@@ -26,11 +26,26 @@ function Home({ top100, newAlbumList }: HomeProps) {
   const top100IdAry = top100TrackList.map((item) => item.id).toString();
   const newAlbumIdAry = newAlbumList.map((item) => item.id).toString();
 
-  const { data: top100Likes } = useRequest({
-    url: `/api/likeShow`,
-    params: { type: 'track', ids: top100IdAry, token: session?.accessToken },
-  });
-
+  const { data: top100Likes } = useRequest(
+    {
+      url: `/api/likeShow`,
+      params: { type: 'track', ids: top100IdAry, token: session?.accessToken },
+    },
+    {
+      fallbackData: {
+        type: 'track',
+        likeInfoList: [
+          {
+            id: 0,
+            likeableId: 0,
+            likeableType: 'track',
+            isLike: 0,
+            likeCount: 0,
+          },
+        ],
+      },
+    }
+  );
   const { data: newAlbumLikes } = useRequest({
     url: `/api/likeShow`,
     params: { type: 'album', ids: newAlbumIdAry, token: session?.accessToken },
@@ -45,7 +60,7 @@ function Home({ top100, newAlbumList }: HomeProps) {
         <Typography variant="h6" component="div">
           <NextLink href={'/chart/now'}>TOP 100</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
-        <Top100 trackList={top100TrackList || []} likeInfoList={top100Likes?.likeInfoList} />
+        <Top100 trackList={top100TrackList || []} likeInfoList={top100Likes.likeInfoList} />
       </ContainerBox>
       <ContainerBox>
         <Typography variant="h6" component="div">
