@@ -36,8 +36,6 @@ function Home({ top100, newAlbumList }: HomeProps) {
     params: { type: 'album', ids: newAlbumIdAry, token: session?.accessToken },
   });
 
-  if (!top100Likes || !newAlbumLikes) return <BasicLoading />;
-
   return (
     <>
       <ContainerBox>
@@ -47,13 +45,13 @@ function Home({ top100, newAlbumList }: HomeProps) {
         <Typography variant="h6" component="div">
           <NextLink href={'/chart/now'}>TOP 100</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
-        <Top100 trackList={top100TrackList || []} likeInfoList={top100Likes.likeInfoList} />
+        <Top100 trackList={top100TrackList || []} likeInfoList={top100Likes?.likeInfoList} />
       </ContainerBox>
       <ContainerBox>
         <Typography variant="h6" component="div">
           <NextLink href={'/new/album'}>최신음악</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
-        <SwiperCard items={newAlbumList} likeInfoList={newAlbumLikes.likeInfoList} />
+        <SwiperCard items={newAlbumList} likeInfoList={newAlbumLikes?.likeInfoList} />
       </ContainerBox>
     </>
   );
