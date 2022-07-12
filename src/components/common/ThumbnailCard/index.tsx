@@ -14,6 +14,8 @@ import { useAppSelector, useAppDispatch } from '@app/hooks';
 import { setPlaylist } from '@components/player/playerSlice';
 import { TrackList } from 'types/track';
 import { Like } from 'types/like';
+import { useSession } from 'next-auth/react';
+import { postLike } from '@utils/postLike';
 
 export interface ThumbnailCardProps {
   id: number;
@@ -23,7 +25,6 @@ export interface ThumbnailCardProps {
   artistName: string;
   trackList: TrackList[];
   likeInfo: Like;
-  postLike: (id: number | null, likeableId: number, likeableType: string) => void;
 }
 
 function ThumbnailCard({
@@ -34,17 +35,22 @@ function ThumbnailCard({
   artistName,
   trackList,
   likeInfo,
-  postLike,
 }: ThumbnailCardProps) {
   const [hover, setHover] = useState(false);
   const isLike = Boolean(likeInfo?.isLike);
   const [checked, setChecked] = useState(isLike);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
+  const { data: session } = useSession();
 
   const handleChange = async () => {
     try {
-      const data = await postLike(likeInfo.id, likeInfo.likeableId, 'album');
+      const data = await postLike({
+        id: likeInfo.id,
+        likeableId: likeInfo.likeableId,
+        likeableType: 'album',
+        token: session?.accessToken,
+      });
       setChecked(Boolean(data.isLike));
     } catch {
       console.error('Like error');

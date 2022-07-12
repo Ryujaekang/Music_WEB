@@ -32,15 +32,15 @@ export default NextAuth({
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        console.log('credentials : ', credentials);
+        // console.log('credentials : ', credentials);
         const res = await axios.post('/user/login', {
           email: credentials?.email,
           password: credentials?.password,
         });
-        console.log('res.data : ', res.data);
+        console.log('res : ', res.status);
 
         const userData = res.data;
-
+        console.log('userData : ', userData);
         // If no error and we have user data, return it
         if (userData.result !== 'FAIL' && userData.data) {
           return userData.data;
@@ -62,23 +62,23 @@ export default NextAuth({
     //     keyId: process.env.APPLE_KEY_ID,
     //   },
     // }),
-    Auth0Provider({
-      clientId: process.env.AUTH0_ID,
-      clientSecret: process.env.AUTH0_SECRET,
-      // @ts-ignore
-      domain: process.env.AUTH0_DOMAIN,
-    }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_ID,
-      clientSecret: process.env.FACEBOOK_SECRET,
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-      // https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
-      // @ts-ignore
-      scope: 'read:user',
-    }),
+    // Auth0Provider({
+    //   clientId: process.env.AUTH0_ID,
+    //   clientSecret: process.env.AUTH0_SECRET,
+    //   // @ts-ignore
+    //   domain: process.env.AUTH0_DOMAIN,
+    // }),
+    // FacebookProvider({
+    //   clientId: process.env.FACEBOOK_ID,
+    //   clientSecret: process.env.FACEBOOK_SECRET,
+    // }),
+    // GithubProvider({
+    //   clientId: process.env.GITHUB_ID,
+    //   clientSecret: process.env.GITHUB_SECRET,
+    //   // https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
+    //   // @ts-ignore
+    //   scope: 'read:user',
+    // }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
@@ -90,10 +90,10 @@ export default NextAuth({
         },
       },
     }),
-    TwitterProvider({
-      clientId: process.env.TWITTER_ID,
-      clientSecret: process.env.TWITTER_SECRET,
-    }),
+    // TwitterProvider({
+    //   clientId: process.env.TWITTER_ID,
+    //   clientSecret: process.env.TWITTER_SECRET,
+    // }),
   ],
   // Database optional. MySQL, Maria DB, Postgres and MongoDB are supported.
   // https://next-auth.js.org/configuration/databases
@@ -143,7 +143,7 @@ export default NextAuth({
   // pages is not specified for that route.
   // https://next-auth.js.org/configuration/pages
   pages: {
-    // signIn: '/auth/signin',  // Displays signin buttons
+    signIn: '/auth/login', // Displays signin buttons
     // signOut: '/auth/signout', // Displays form with sign out button
     // error: '/auth/error', // Error code passed in query string as ?error=
     // verifyRequest: '/auth/verify-request', // Used for check email page

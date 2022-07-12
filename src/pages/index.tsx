@@ -26,34 +26,30 @@ function Home({ top100, newAlbumList }: HomeProps) {
   const top100IdAry = top100TrackList.map((item) => item.id).toString();
   const newAlbumIdAry = newAlbumList.map((item) => item.id).toString();
 
-  const { data: top100Likes } = useRequest({
-    url: `/api/likeShow`,
-    params: { type: 'track', ids: top100IdAry, token: session?.accessToken },
-  });
-
+  const { data: top100Likes } = useRequest(
+    {
+      url: `/api/likeShow`,
+      params: { type: 'track', ids: top100IdAry, token: session?.accessToken },
+    },
+    {
+      fallbackData: {
+        type: 'track',
+        likeInfoList: [
+          {
+            id: 0,
+            likeableId: 0,
+            likeableType: 'track',
+            isLike: 0,
+            likeCount: 0,
+          },
+        ],
+      },
+    }
+  );
   const { data: newAlbumLikes } = useRequest({
     url: `/api/likeShow`,
     params: { type: 'album', ids: newAlbumIdAry, token: session?.accessToken },
   });
-
-  const postLike = async (id: number | null, likeableId: number, likeableType: string) => {
-    if (id) {
-      const { data } = await Axios.put('/api/like', {
-        id,
-        token: session?.accessToken,
-      });
-      return data;
-    } else {
-      const { data } = await Axios.post('/api/like', {
-        likeableId,
-        likeableType,
-        token: session?.accessToken,
-      });
-      return data;
-    }
-  };
-
-  if (!top100Likes || !newAlbumLikes) return <BasicLoading />;
 
   return (
     <>
@@ -64,21 +60,13 @@ function Home({ top100, newAlbumList }: HomeProps) {
         <Typography variant="h6" component="div">
           <NextLink href={'/chart/now'}>TOP 100</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
-        <Top100
-          trackList={top100TrackList || []}
-          likeInfoList={top100Likes.likeInfoList}
-          postLike={postLike}
-        />
+        <Top100 trackList={top100TrackList || []} likeInfoList={top100Likes.likeInfoList} />
       </ContainerBox>
       <ContainerBox>
         <Typography variant="h6" component="div">
           <NextLink href={'/new/album'}>최신음악</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
-        <SwiperCard
-          items={newAlbumList}
-          likeInfoList={newAlbumLikes.likeInfoList}
-          postLike={postLike}
-        />
+        <SwiperCard items={newAlbumList} likeInfoList={newAlbumLikes?.likeInfoList} />
       </ContainerBox>
     </>
   );
