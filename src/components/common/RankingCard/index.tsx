@@ -25,6 +25,8 @@ import { CustomMenu } from '..';
 import Image from 'next/image';
 import WaveRanking from '../WaveRanking';
 import getMusicLink from '@lib/getMusicSrc';
+import { useSession } from 'next-auth/react';
+import { postLike } from '@utils/postLike';
 
 // redux-toolkit
 import { useAppSelector, useAppDispatch } from '@app/hooks';
@@ -44,7 +46,6 @@ export interface RankingCardProps {
   albumId: number;
   musicUrl: string;
   likeInfo: Like;
-  postLike: (id: number | null, likeableId: number, likeableType: string) => void;
 }
 
 function RankingCard({
@@ -59,7 +60,6 @@ function RankingCard({
   artistName,
   musicUrl,
   likeInfo,
-  postLike,
 }: RankingCardProps) {
   const theme = useTheme();
   const [hover, setHover] = useState(false);
@@ -67,10 +67,16 @@ function RankingCard({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
+  const { data: session } = useSession();
 
   const handleChange = async () => {
     try {
-      const data = await postLike(likeInfo.id, likeInfo.likeableId, 'track');
+      const data = await postLike({
+        id: likeInfo.id,
+        likeableId: likeInfo.likeableId,
+        likeableType: 'track',
+        token: session?.accessToken,
+      });
       setChecked(Boolean(data.isLike));
     } catch {
       console.error('Like error');
@@ -92,8 +98,6 @@ function RankingCard({
 
     dispatch(setPlaylist(state));
   };
-
-  // console.log('likeInfo', likeInfo);
 
   return (
     <Box
