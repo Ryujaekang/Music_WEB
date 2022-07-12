@@ -1,4 +1,4 @@
-import useSWRImmutable, { SWRConfiguration, SWRResponse } from 'swr';
+import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 // import useSWRImmutable from 'swr/immutable'
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 
@@ -27,7 +27,7 @@ export default function useRequest<Data = unknown, Error = unknown>(
     error,
     isValidating,
     mutate,
-  } = useSWRImmutable<AxiosResponse<Data>, AxiosError<Error>>(
+  } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(
     request && JSON.stringify(request),
     /**
      * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
