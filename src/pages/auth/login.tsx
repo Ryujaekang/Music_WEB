@@ -17,21 +17,25 @@ import { Copyright } from '@components/common';
 import { useColorMode } from '@theme/index';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { getProviders, getCsrfToken, signIn, getSession } from 'next-auth/react';
 
-function Login() {
+function Login({ providers, csrfToken }) {
   const router = useRouter();
   const { mode, toggleColorMode } = useColorMode();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const email = data.get('email');
+    const password = data.get('password');
+
+    const response = await signIn('credentials', {
+      email,
+      password,
     });
-    router.push('/');
-    mode === 'light' && toggleColorMode();
+
+    console.log('response', response);
+    // mode === 'light' && toggleColorMode();
   };
 
   // useEffect(() => {
@@ -102,9 +106,35 @@ function Login() {
           </Grid>
         </Box>
       </Box>
+      {Object.values(providers).map((provider) => {
+        // console.log('provider', provider);
+        return (
+          <div key={provider.name}>
+            <button onClick={() => signIn(provider.id)}>Sign in with {provider.name}</button>
+          </div>
+        );
+      })}
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );
+}
+
+export async function getServerSideProps(context) {
+  const providers = await getProviders();
+  const csrfToken = await getCsrfToken(context);
+  const { req } = context;
+  const session = await getSession({ req });
+  if (session) {
+    return {
+      redirect: { destination: '/' },
+    };
+  }
+  return {
+    props: {
+      providers,
+      csrfToken,
+    },
+  };
 }
 
 export default Login;
