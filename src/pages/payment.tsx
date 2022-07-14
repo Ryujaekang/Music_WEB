@@ -21,68 +21,39 @@ import { Copyright } from '@components/common';
 
 const tiers = [
   {
-    title: 'Free',
+    title: '무료',
     price: '0',
-    description: ['10 users included', '2 GB of storage', 'Help center access', 'Email support'],
-    buttonText: 'Sign up for free',
+    description: ['무제한 듣기', '오프라인 재생'],
+    buttonText: '선택하기',
     buttonVariant: 'outlined',
   },
   {
-    title: 'Pro',
-    subheader: 'Most popular',
-    price: '15',
-    description: [
-      '20 users included',
-      '10 GB of storage',
-      'Help center access',
-      'Priority email support',
-    ],
-    buttonText: 'Get started',
+    title: '프로',
+    subheader: '가장 인기있는',
+    price: '4990',
+    description: ['무료 기능 제공', 'VIP 특별 선물 제공'],
+    buttonText: '선택하기',
     buttonVariant: 'contained',
   },
   {
-    title: 'Enterprise',
-    price: '30',
-    description: [
-      '50 users included',
-      '30 GB of storage',
-      'Help center access',
-      'Phone & email support',
-    ],
-    buttonText: 'Contact us',
+    title: '기업',
+    price: '29900',
+    description: ['자세한 사항 문의'],
+    buttonText: '선택하기',
     buttonVariant: 'outlined',
   },
 ];
-const footers = [
-  {
-    title: 'Company',
-    description: ['Team', 'History', 'Contact us', 'Locations'],
-  },
-  {
-    title: 'Features',
-    description: ['Cool stuff', 'Random feature', 'Team feature', 'Developer stuff', 'Another one'],
-  },
-  {
-    title: 'Resources',
-    description: ['Resource', 'Resource name', 'Another resource', 'Final resource'],
-  },
-  {
-    title: 'Legal',
-    description: ['Privacy policy', 'Terms of use'],
-  },
-];
 
-function PricingContent() {
+function Payment() {
   return (
     <>
       {/* Hero unit */}
       <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
         <Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>
-          Pricing
+          음원 서비스
         </Typography>
         <Typography variant="h5" align="center" color="text.secondary" component="p">
-          Quickly build an effective pricing table for your potential customers with this layout.
-          It&apos;s built with default MUI components with little customization.
+          임시 가격표 입니다.
         </Typography>
       </Container>
       {/* End hero unit */}
@@ -117,10 +88,10 @@ function PricingContent() {
                     }}
                   >
                     <Typography component="h2" variant="h3" color="text.primary">
-                      ${tier.price}
+                      {tier.price}
                     </Typography>
                     <Typography variant="h6" color="text.secondary">
-                      /mo
+                      /원
                     </Typography>
                   </Box>
                   <ul>
@@ -145,10 +116,8 @@ function PricingContent() {
   );
 }
 
-Pricing.getLayout = function getLayout(page: React.ReactElement) {
+Payment.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default function Pricing() {
-  return <PricingContent />;
-}
+export default Payment;
