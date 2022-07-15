@@ -58,7 +58,7 @@ function Search({ searchData }: SearchProps) {
         {
           all: (
             <>
-              {track.trackList.length > 0 && (
+              {track?.trackList.length > 0 && (
                 <ContainerBox>
                   <Typography variant="h6" component="div">
                     <NextLink
@@ -81,7 +81,7 @@ function Search({ searchData }: SearchProps) {
                   )}
                 </ContainerBox>
               )}
-              {album.albumList.length > 0 && (
+              {album?.albumList.length > 0 && (
                 <ContainerBox>
                   <Typography variant="h6" component="div">
                     <NextLink
@@ -92,7 +92,7 @@ function Search({ searchData }: SearchProps) {
                   <SwiperCard items={album.albumList} />
                 </ContainerBox>
               )}
-              {artist.artistList.length > 0 && (
+              {artist?.artistList.length > 0 && (
                 <ContainerBox>
                   <Typography variant="h6" component="div">
                     <NextLink
