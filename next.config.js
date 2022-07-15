@@ -16,4 +16,5 @@ module.exports = {
       'usercontent.jamendo.com',
     ],
   },
+  staticPageGenerationTimeout: 100,
 };
