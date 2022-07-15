@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import {
   Box,
@@ -69,6 +69,10 @@ function RankingCard({
   const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
   const { data: session } = useSession();
+
+  useEffect(() => {
+    likeInfo && setChecked(Boolean(likeInfo.isLike));
+  }, [likeInfo]);
 
   const handleChange = async () => {
     try {

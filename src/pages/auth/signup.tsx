@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Avatar,
   Button,
@@ -11,30 +11,70 @@ import {
   Box,
   Typography,
   Container,
+  RadioGroup,
+  Radio,
+  FormLabel,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Copyright } from '@components/common';
 import { useColorMode } from '@theme/index';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 function SignUp() {
   const router = useRouter();
   const { mode, toggleColorMode } = useColorMode();
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [gender, setGender] = useState('M');
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGender((event.target as HTMLInputElement).value);
+  };
+
+  const handleChangePhoneNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(event.target.value);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    router.push('/login');
+
+    const res = await axios
+      .post('/api/signup', {
+        name: data.get('name'),
+        gender: data.get('gender'),
+        phoneNumber: data.get('phoneNumber'),
+        email: data.get('email'),
+        password: data.get('password'),
+      })
+      .then((data) => data.data)
+      .catch(() => enqueueSnackbar('회원가입에 실패하였습니다.', { variant: 'error' }));
+
+    if (res.result === 'SUCCESS') {
+      enqueueSnackbar('회원가입하였습니다..', { variant: 'success' });
+      router.push('/auth/login');
+    }
+
+    if (res.result === 'FAIL' || !res) {
+      enqueueSnackbar(res.message.error, { variant: 'error' });
+    }
   };
 
   useEffect(() => {
-    mode === 'dark' && toggleColorMode();
-  }, []);
+    if (phoneNumber.length === 10) {
+      setPhoneNumber(phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
+    }
+    if (phoneNumber.length === 13) {
+      setPhoneNumber(phoneNumber.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
+    }
+  }, [phoneNumber]);
+
+  // useEffect(() => {
+  //   mode === 'dark' && toggleColorMode();
+  // }, []);
 
   return (
     <Container
@@ -66,11 +106,37 @@ function SignUp() {
             <Grid item xs={12}>
               <TextField
                 autoComplete="given-name"
-                name="firstName"
+                name="name"
                 required
                 fullWidth
-                id="firstName"
+                id="name"
                 label="이름"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormLabel id="demo-controlled-radio-buttons-group">성별</FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="gender"
+                value={gender}
+                onChange={handleChangeGender}
+              >
+                <FormControlLabel value="M" control={<Radio />} label="남자" />
+                <FormControlLabel value="F" control={<Radio />} label="여자" />
+              </RadioGroup>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-phone"
+                name="phoneNumber"
+                required
+                fullWidth
+                id="phoneNumber"
+                label="휴대폰 번호"
+                value={phoneNumber}
+                onChange={handleChangePhoneNumber}
+                inputProps={{ maxLength: 13 }}
                 autoFocus
               />
             </Grid>
@@ -108,7 +174,7 @@ function SignUp() {
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link variant="body2" component="div">
-                <NextLink href="/login">이미 회원가입이 되었습니까?</NextLink>
+                <NextLink href="/auth/login">이미 회원가입이 되었습니까?</NextLink>
               </Link>
             </Grid>
           </Grid>
