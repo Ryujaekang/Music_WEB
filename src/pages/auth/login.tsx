@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Button,
@@ -18,9 +18,29 @@ import { useColorMode } from '@theme/index';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { getProviders, getCsrfToken, signIn, getSession } from 'next-auth/react';
+import GoogleIcon from '@mui/icons-material/Google';
+
+const errors = {
+  Signin: 'Try signing with a different account.',
+  OAuthSignin: 'Try signing with a different account.',
+  OAuthCallback: 'Try signing with a different account.',
+  OAuthCreateAccount: 'Try signing with a different account.',
+  EmailCreateAccount: 'Try signing with a different account.',
+  Callback: 'Try signing with a different account.',
+  OAuthAccountNotLinked:
+    'To confirm your identity, sign in with the same account you used originally.',
+  EmailSignin: 'Check your email address.',
+  CredentialsSignin: 'Sign in failed. Check the details you provided are correct.',
+  default: 'Unable to sign in.',
+};
+
+const SignInError = ({ error }) => {
+  const errorMessage = error && (errors[error] ?? errors.default);
+  return <Typography>{errorMessage}</Typography>;
+};
 
 function Login({ providers, csrfToken }) {
-  const router = useRouter();
+  const { error } = useRouter().query;
   const { mode, toggleColorMode } = useColorMode();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,12 +55,7 @@ function Login({ providers, csrfToken }) {
     });
 
     console.log('response', response);
-    // mode === 'light' && toggleColorMode();
   };
-
-  // useEffect(() => {
-  //   mode === 'dark' && toggleColorMode();
-  // }, []);
 
   return (
     <Container
@@ -64,6 +79,8 @@ function Login({ providers, csrfToken }) {
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
+        {/* Error message */}
+        {error && <SignInError error={error} />}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -100,20 +117,33 @@ function Login({ providers, csrfToken }) {
             </Grid>
             <Grid item>
               <Link variant="body2" component="div">
-                <NextLink href="/signup">회원가입</NextLink>
+                <NextLink href="/auth/signup">회원가입</NextLink>
               </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
-      {Object.values(providers).map((provider) => {
-        // console.log('provider', provider);
-        return (
-          <div key={provider.name}>
-            <button onClick={() => signIn(provider.id)}>Sign in with {provider.name}</button>
-          </div>
-        );
-      })}
+      <Box
+        mt={2}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        {Object.values(providers).map((provider) => {
+          if (provider.id === 'google')
+            return (
+              <Avatar
+                key={provider.name}
+                onClick={() => signIn(provider.id)}
+                sx={{ bgcolor: '#fff', cursor: 'pointer' }}
+              >
+                <GoogleIcon />
+              </Avatar>
+            );
+        })}
+      </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
   );

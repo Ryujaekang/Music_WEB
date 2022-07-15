@@ -8,6 +8,7 @@ import { SessionProvider } from 'next-auth/react';
 import { ToggleColorMode } from 'theme';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../lib/createEmotionCache';
+import { SnackbarProvider } from 'notistack';
 
 // fortawesome 아이콘 버그 해결 Link: https://fontawesome.com/docs/web/use-with/react/use-with
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -36,9 +37,11 @@ function App({ Component, emotionCache = clientSideEmotionCache, pageProps }: Ap
       // you have a short session maxAge time. Shown here with default values.
       session={pageProps.session}
     >
-      <Provider store={store}>
-        <ToggleColorMode>{getLayout(<Component {...pageProps} />)}</ToggleColorMode>
-      </Provider>
+      <SnackbarProvider maxSnack={3}>
+        <Provider store={store}>
+          <ToggleColorMode>{getLayout(<Component {...pageProps} />)}</ToggleColorMode>
+        </Provider>
+      </SnackbarProvider>
     </SessionProvider>
     // </CacheProvider>
   );
