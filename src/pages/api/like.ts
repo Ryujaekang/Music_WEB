@@ -34,11 +34,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     if (req.method === 'PUT') {
       const { data } = await axios
-        .put(`/like/${id}`, {
-          headers: {
-            authorization: 'Bearer ' + token,
-          },
-        })
+        .put(
+          `/like`,
+          { id },
+          {
+            headers: {
+              authorization: 'Bearer ' + token,
+            },
+          }
+        )
         .then((res) => res.data);
       res.status(200).json(data);
     }

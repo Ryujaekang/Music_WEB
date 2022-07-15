@@ -4,6 +4,7 @@ import 'react-jinke-music-player/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeadphonesAlt } from '@fortawesome/free-solid-svg-icons';
 import { GetLocalStorage, SetLocalStorage } from '@lib/storage';
+import { useSession } from 'next-auth/react';
 
 // redux-toolkit
 import { useAppSelector, useAppDispatch } from '@app/hooks';
@@ -15,40 +16,19 @@ const Player = (props: any) => {
   const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
-
-  // const fetchData = async () => {
-  //   const { data } = await axios.get('/api/channel', {
-  //     params: { id: 19 },
-  //   });
-  //   // let state = {
-  //   //   name: data.list.name,
-  //   //   singer: data.list.artistName,
-  //   //   cover: data.list.albumImage,
-  //   //   musicSrc: getMusicLink(data.list.id),
-  //   // };
-  //   const playList = await Promise.all(
-  //     data.list.map(async (val, i) => {
-  //       return {
-  //         name: val.name,
-  //         singer: val.artistName,
-  //         cover: val.albumImage,
-  //         musicSrc: await getMusicLink(val.id),
-  //       };
-  //     })
-  //   );
-
-  //   dispatch(setOptions({ clearPriorAudioLists: true, quietUpdate: false, audioLists: playList }));
-  // };
-
-  // useEffect(() => {
-  //   // call the function
-  //   fetchData()
-  //     // make sure to catch any error
-  //     .catch(console.error);
-  // }, []);
+  const { data: session } = useSession();
 
   const handlePlaylistChange = (val: any) => {
     dispatch(setPlaylist(val));
+  };
+
+  const postTrackPlaylog = async (trackId: number) => {
+    if (session) {
+      await axios.post('/api/trackPlay', {
+        trackId,
+        token: session?.accessToken,
+      });
+    }
   };
 
   return (
@@ -68,6 +48,7 @@ const Player = (props: any) => {
       showDownload={false}
       showReload={true}
       restartCurrentOnPrev={true}
+      onAudioPlay={(audioInfo) => postTrackPlaylog(audioInfo.trackId)}
       defaultPosition={{ bottom: 50, right: 50 }}
     />
   );
