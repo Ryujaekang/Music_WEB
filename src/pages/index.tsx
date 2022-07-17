@@ -53,10 +53,10 @@ function Home({ top100, newAlbumList }: HomeProps) {
 
   return (
     <>
-      <ContainerBox>
+      {/* <ContainerBox>
         <Banner />
-      </ContainerBox>
-      <ContainerBox>
+      </ContainerBox> */}
+      <ContainerBox marginTop={4}>
         <Typography variant="h6" component="div">
           <NextLink href={'/chart/now'}>TOP 100</NextLink> <FontAwesomeIcon icon={faAngleRight} />
         </Typography>
