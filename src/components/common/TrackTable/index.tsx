@@ -24,7 +24,6 @@ import Image from 'next/image';
 import WaveRanking from '../WaveRanking';
 import { Like } from 'types/like';
 import { ChartTrack } from 'types/track';
-import getMusicLink from '@lib/getMusicSrc';
 
 // redux-toolkit
 import { useAppSelector, useAppDispatch } from '@app/hooks';
@@ -297,6 +296,15 @@ function TrackTable({ tableHead, rows, selected, onChangeSelected, likeInfo }: T
             <CustomMenu
               anchorEl={anchorEl}
               setAnchorEl={setAnchorEl}
+              playMusic={() =>
+                playMusic({
+                  name: rows[hoveredRow].name,
+                  trackId: rows[hoveredRow].id,
+                  musicUrl: rows[hoveredRow].musicUrl,
+                  albumImage: rows[hoveredRow].albumImage,
+                  artistName: rows[hoveredRow].artistName,
+                })
+              }
               trackId={rows[hoveredRow]?.id}
               albumId={rows[hoveredRow]?.albumId}
               artistId={rows[hoveredRow]?.artistId}

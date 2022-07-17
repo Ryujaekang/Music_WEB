@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Layout from '@components/layout';
-import { Box, Typography, Stack, useMediaQuery, Select, MenuItem } from '@mui/material';
+import { Box, Typography, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import {
   ContainerBox,
@@ -18,7 +18,6 @@ import 'moment/locale/ko';
 import { useRouter } from 'next/router';
 import useRequest from '@lib/useRequest';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { SWRConfig } from 'swr';
 
 interface ChartProps {
   chartData: ChartType;

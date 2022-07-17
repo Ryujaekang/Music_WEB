@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@components/layout';
-import { Stack, Button, Link, Typography, useMediaQuery, Grid } from '@mui/material';
+import { Stack, Link, Typography, useMediaQuery } from '@mui/material';
 import {
-  ChoiceSlide,
   ContainerBox,
   CustomSelect,
   CustomTab,
   MobileTrackList,
-  PlayGroupChip,
-  ServiceOFF,
   SwiperArtistCard,
   SwiperCard,
   ThumbnailCard,

@@ -14,20 +14,13 @@ import Image from 'next/image';
 import { albumDefaultImage } from '@assets/Images';
 import { useTheme } from '@mui/material/styles';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Checkbox,
-  CircularProgress,
   Collapse,
-  Container,
   Divider,
   Grid,
   IconButton,
   Link,
-  Paper,
-  Rating,
   Stack,
   Tab,
   Tabs,
@@ -36,19 +29,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCompactDisc,
-  faChevronRight,
-  faHeart,
-  faAngleDown,
-  faAngleUp,
-  faAngleRight,
-  faVideo,
-  faDownload,
-  faPlus,
-  faShareAlt,
-  faStar,
-} from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faShareAlt, faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRE } from '@fortawesome/free-regular-svg-icons';
 import { orange } from '@mui/material/colors';
 import axios from '@lib/customAxios';
