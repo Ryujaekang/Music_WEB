@@ -10,17 +10,12 @@ import { useSession } from 'next-auth/react';
 import { useAppSelector, useAppDispatch } from '@app/hooks';
 import { setOptions, setPlaylist } from './playerSlice';
 import axios from 'axios';
-import getMusicLink from '@lib/getMusicSrc';
 
 const Player = (props: any) => {
   const { playlist } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
-
-  const handlePlaylistChange = (val: any) => {
-    dispatch(setPlaylist(val));
-  };
 
   const postTrackPlaylog = async (trackId: number) => {
     if (session) {
@@ -44,7 +39,7 @@ const Player = (props: any) => {
       spaceBar={true}
       // remember={true}
       showMiniProcessBar={true}
-      showDestroy={true}
+      showDestroy={false}
       showDownload={false}
       showReload={true}
       restartCurrentOnPrev={true}

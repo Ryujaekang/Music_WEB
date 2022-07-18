@@ -24,7 +24,6 @@ import { faHeart as faHeartRE } from '@fortawesome/free-regular-svg-icons';
 import { CustomMenu } from '..';
 import Image from 'next/image';
 import WaveRanking from '../WaveRanking';
-import getMusicLink from '@lib/getMusicSrc';
 import { useSession } from 'next-auth/react';
 import { postLike } from '@utils/postLike';
 

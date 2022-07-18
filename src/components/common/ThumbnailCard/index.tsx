@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faHeart, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRE } from '@fortawesome/free-regular-svg-icons';
 import { CustomMenu } from '..';
-import getMusicLink from '@lib/getMusicSrc';
 
 // redux-toolkit
 import { useAppSelector, useAppDispatch } from '@app/hooks';
