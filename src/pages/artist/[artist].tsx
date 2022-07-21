@@ -323,11 +323,12 @@ function Artist({ artistData }: ArtistProps) {
               <ContainerBox>
                 <Collapse in={show} collapsedSize={140}>
                   <Typography>아티스트 소개</Typography>
-                  <Stack sx={{ marginTop: 2 }}>
+                  {/* 백엔드 오류로 인한 임시적인 주석 처리 - 22.07.21 */}
+                  {/* <Stack sx={{ marginTop: 2 }}>
                     {biosInfo.content?.map((val, i) => (
                       <Typography key={i}>{val}</Typography>
                     ))}
-                  </Stack>
+                  </Stack> */}
                 </Collapse>
                 <Box display="flex" height={50} alignItems="center" justifyContent="center">
                   <IconButton onClick={handleChangeShow}>
