@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Layout from '@components/layout';
 import { Box, Stack, Container, Typography, TextField, Button } from '@mui/material';
+import emailjs from '@emailjs/browser';
 
 function Service() {
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const form = useRef();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email');
 
-    // const response = await signIn('credentials', {
-    //   email,
-    //   password,
-    // });
-
-    // console.log('response', response);
+    emailjs
+      .sendForm(
+        process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID,
+        form.current,
+        process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
   };
 
   return (
@@ -25,7 +35,7 @@ function Service() {
         justifyContent: 'center',
       }}
     >
-      <Stack component="form" onSubmit={handleSubmit} spacing={2} sx={{ width: '100%' }}>
+      <Stack component="form" ref={form} onSubmit={handleSubmit} spacing={2} sx={{ width: '100%' }}>
         <Typography variant="h6" component="div">
           서비스 문의하기
         </Typography>
@@ -38,7 +48,15 @@ function Service() {
           autoComplete="email"
           autoFocus
         />
-        <TextField id="content" label="문의 내용" name="content" multiline rows={6} />
+        <TextField
+          required
+          fullWidth
+          id="message"
+          label="문의 내용"
+          name="message"
+          multiline
+          rows={6}
+        />
         <Box
           sx={{
             display: 'flex',

@@ -45,6 +45,9 @@ export const ToggleColorMode = ({ children }) => {
           h5: {
             fontSize: '2.4rem',
           },
+          button: {
+            fontSize: '1.6rem',
+          },
         },
         zIndex: {
           appBar: 100,
